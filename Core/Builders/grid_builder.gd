@@ -69,7 +69,7 @@ static func build(mission: MissionSetup, board: TileMapLayer) -> Dictionary:
 	
 	# 7. HEROIS
 	# Posiciona o jogador
-	_spawn_heroes(mission, data, board)
+	#_spawn_heroes(mission, data, board)
 
 	print("✅ GridBuilder: Construção concluída com %d nós navegáveis." % id_counter)
 	return data
@@ -245,7 +245,6 @@ static func _spawn_objects(mission: MissionSetup, grid: Dictionary, board: TileM
 			#if id_a != -1 and id_b != -1:
 				
 					#if debug_mode: queue_redraw()
-			print()
 			board.open_passage_in_astar(pos_a, pos_b)
 		
 		var door = door_scene.instantiate()
@@ -257,37 +256,49 @@ static func _spawn_objects(mission: MissionSetup, grid: Dictionary, board: TileM
 		door.is_open = mission.doors[door_ids]
 		
 		#print()
-		
+		var is_open = mission.doors[door_ids]
+		var is_vertical = dir.x == 0
 		# Rotação Visual (Assumindo que o Sprite original da porta é em Pé / Vertical)
-		if dir.x == 0 or mission.doors[door_ids]: 
-			door.rotation_degrees = 90 # Vizinhos Verticais -> Parede Horizontal -> Gira Sprite
-		else:
-			door.rotation_degrees = 0  # Vizinhos Horizontais -> Parede Vertical -> Sprite Normal
+		if is_open != is_vertical: 
+			door.rotation_degrees += 90 # Vizinhos Verticais -> Parede Horizontal -> Gira Sprite
 		
+		
+		#if mission.doors[door_ids]:
+			#print("Door rotation")
+			
 		grid[grid_coord_a].interactable = door
 		grid[grid_coord_b].interactable = door
 		
 	print("🚪 --- FIM SPAWN DE PORTAS ---\n")
 
-static func _spawn_heroes(mission: MissionSetup, data: Dictionary, board: TileMapLayer):
-	# Extraímos o grid do dicionário principal
-	var grid = data.grid
+static func spawn_heroes(heroes_stats: Array[UnitStats], mission: MissionSetup, board: GameBoard) -> Array[Unit]:
+	var spawned_units: Array[Unit] = []
+	print(heroes_stats)
+	var hero_scene = load("res://Gameplay/Units/Unit.tscn") # Sua cena base genérica
 	
-	if grid.has(mission.player_spawns):
-		var hero_pos = mission.player_spawns
-		var hero = load("res://Gameplay/Units/Unit.tscn").instantiate()
-		board.add_child(hero)
+	for i in range(heroes_stats.size()):
+		if i >= mission.heroes_spawn_points.size():
+			push_warning("Mais heróis do que pontos de spawn!")
+			break
+			
+		var stats = heroes_stats[i]
+		var spawn_grid_pos = mission.heroes_spawn_points[i]
 		
-		hero.grid_pos = hero_pos
-		hero.position = board.map_to_local(hero_pos)
+		# Instancia
+		var hero_instance = hero_scene.instantiate()
 		
-		grid[hero_pos].add_unit(hero)
+		# Configura
+		hero_instance.name = stats.unit_name
+		hero_instance.stats = stats # Injeta o Resource (o _ready da Unit fará o resto)
+		hero_instance.grid_pos = spawn_grid_pos
+		hero_instance.position = board.map_to_local(spawn_grid_pos)
 		
-		# AGORA FUNCIONA: 'data' foi passado como argumento
-		data.hero = hero 
+		# Adiciona à cena
+		board.add_child(hero_instance)
 		
-		print("🦸 Herói spawnado em: ", hero_pos)
-		return hero
-	else:
-		push_error("❌ Erro: Spawn point inválido!")
-		return null
+		# Registra no Board
+		board.register_unit_position(hero_instance, spawn_grid_pos, true)
+		
+		spawned_units.append(hero_instance)
+		
+	return spawned_units

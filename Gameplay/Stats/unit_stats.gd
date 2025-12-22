@@ -2,9 +2,22 @@ class_name UnitStats
 extends Resource
 
 # Usamos @export para que esses campos apareçam no editor do Godot
+# --- IDENTIDADE ---
+@export_group("Identidade")
+@export var unit_name: String = "Heroi"
+@export var job_class: String = "Guerreiro" # Ex: Mago, Ladino
+@export var portrait: Texture2D # Para usar no HUD
+@export var sprite: Texture2D   # Para usar no boneco no mapa
+
+# --- VITALIDADE ---
 @export_group("Vitalidade")
 @export var max_health: int = 5
 @export var current_health: int = 5
+
+# --- RECURSOS DE TURNO ---
+@export_group("Recursos")
+@export var max_ap: int = 3
+@export var max_mp: int = 0 # Geralmente começa com 0 e ganha convertendo AP
 
 @export_group("Combate")
 @export var attack_damage: int = 1

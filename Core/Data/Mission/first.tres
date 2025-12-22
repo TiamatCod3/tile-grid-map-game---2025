@@ -22,8 +22,14 @@ layout_rotation = Dictionary[Vector2i, int]({
 Vector2i(6, 0): 1
 })
 doors = Dictionary[Vector2i, bool]({
+Vector2i(6, 7): false,
 Vector2i(7, 8): true,
-Vector2i(8, 9): false
+Vector2i(8, 9): false,
+Vector2i(9, 14): true,
+Vector2i(13, 19): false,
+Vector2i(17, 23): false,
+Vector2i(29, 30): false,
+Vector2i(32, 35): false
 })
-player_spawns = Vector2i(2, 0)
+heroes_spawn_points = Array[Vector2i]([Vector2i(2, 0), Vector2i(2, 0)])
 metadata/_custom_type_script = "uid://47hes38ln2um"

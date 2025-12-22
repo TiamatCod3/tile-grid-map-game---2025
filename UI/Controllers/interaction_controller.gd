@@ -30,23 +30,33 @@ func _unhandled_input(event: InputEvent) -> void:
 			pass
 
 func _handle_map_click():
-	# 1. Prioridade: UI flutuante (Portas, Ícones no mundo)
-	var obj = get_physics_object_under_mouse()
-	if obj and obj is Door:
-		var cmd = InteractCommand.new(game_board.unit, game_board, obj)
-		await CommandInvoker.execute_command(cmd)
-		return
+	var active_hero = TurnManager.active_unit
+	if not active_hero: return
 
-	# 2. Secundário: Chão (Movimento)
-	# Precisamos garantir que game_board existe antes de chamar
+	var obj = get_physics_object_under_mouse()
+	
+	# --- CASO 1: OBJETO INTERATIVO (PORTA) ---
+	if obj and obj != active_hero:
+		if obj is Door:
+			# Verifica se já estamos do lado (Lógica Padrão)
+			if active_hero.grid_pos == obj.coord_a or active_hero.grid_pos == obj.coord_b:
+				var cmd = InteractCommand.new(active_hero, game_board, obj)
+				await CommandInvoker.execute_command(cmd)
+			
+			# LÓGICA NOVA: Porta Distante
+			else:
+				await _handle_distant_interaction(active_hero, obj)
+			return
+
+	# --- CASO 2: MOVIMENTO NO CHÃO ---
 	if game_board:
 		var mouse_pos = game_board.get_global_mouse_position()
 		var clicked_cell = game_board.local_to_map(game_board.to_local(mouse_pos))
 		
 		if game_board.grid.has(clicked_cell):
-			var cmd = MoveCommand.new(game_board.unit, game_board, clicked_cell)
+			var cmd = MoveCommand.new(active_hero, game_board, clicked_cell)
 			await CommandInvoker.execute_command(cmd)
-
+			
 # --- Helpers ---
 func get_physics_object_under_mouse() -> Node:
 	# Acessa o mundo 2D através do game_board
@@ -75,3 +85,75 @@ func get_physics_object_under_mouse() -> Node:
 		#CommandInvoker.undo_last_command()
 	#elif event.is_action_pressed("ui_redo"):
 		#CommandInvoker.redo_last_command()
+# --- FUNÇÃO NOVA: GERENCIA O "ANDAR E ABRIR" ---
+func _handle_distant_interaction(hero: Unit, door: Door) -> void:
+	print("Interact: Porta distante detectada. Calculando rota...")
+	
+	# 1. Descobrir qual lado da porta é acessível e mais perto
+	var start_pos = hero.grid_pos
+	var target_pos = Vector2i(-1, -1)
+	var best_path: Array[Vector2i] = []
+	
+	# Pega caminhos para os dois lados da porta
+	var path_a = _get_clean_path(start_pos, door.coord_a)
+	var path_b = _get_clean_path(start_pos, door.coord_b)
+	
+	# Compara qual é o melhor
+	var valid_a = not path_a.is_empty()
+	var valid_b = not path_b.is_empty()
+	
+	if valid_a and valid_b:
+		# Se ambos acessíveis, pega o mais curto
+		if path_a.size() <= path_b.size():
+			best_path = path_a
+			target_pos = door.coord_a
+		else:
+			best_path = path_b
+			target_pos = door.coord_b
+	elif valid_a:
+		best_path = path_a
+		target_pos = door.coord_a
+	elif valid_b:
+		best_path = path_b
+		target_pos = door.coord_b
+	else:
+		print("Interact: Nenhum caminho possível para a porta.")
+		EventManager.dispatch(GameEvents.MOVEMENT_FAILED, {"reason": "Caminho Bloqueado"})
+		return
+
+	# 2. Simular Custos (Para não andar e morrer na praia sem AP pra abrir)
+	var sim = TurnManager.calculate_movement_cost(best_path)
+	
+	if not sim.success:
+		EventManager.dispatch(GameEvents.MOVEMENT_FAILED, {"reason": "Sem recursos para chegar lá"})
+		return
+		
+	# Sobrou recurso para interagir? (Interação custa 1 MP ou converte 1 AP)
+	# Precisamos de pelo menos 1 MP sobrando OU 1 AP para converter
+	var can_interact = (sim.final_mp >= 1) or (sim.final_ap >= 1)
+	
+	if not can_interact:
+		print("Interact: Consigo chegar, mas não sobra energia para abrir.")
+		EventManager.dispatch(GameEvents.INTERACTION_FAILED, {"reason": "Sem AP suficiente para abrir"})
+		return
+
+	# 3. EXECUTAR A SEQUÊNCIA
+	print("Interact: Auto-Walk iniciado para %s" % target_pos)
+	
+	# A) Move
+	var move_cmd = MoveCommand.new(hero, game_board, target_pos)
+	var moved = await CommandInvoker.execute_command(move_cmd)
+	
+	# B) Abre (Apenas se o movimento completou com sucesso)
+	if moved:
+		# Pequeno delay visual opcional para ficar natural
+		# await get_tree().create_timer(0.1).timeout 
+		var interact_cmd = InteractCommand.new(hero, game_board, door)
+		await CommandInvoker.execute_command(interact_cmd)
+
+# Helper para pegar caminho limpo (sem o ponto inicial)
+func _get_clean_path(from: Vector2i, to: Vector2i) -> Array[Vector2i]:
+	var raw = game_board.get_path_stack(from, to)
+	if raw.size() > 0 and raw[0] == from:
+		raw.pop_front()
+	return raw

@@ -39,6 +39,11 @@ signal ui_request_end_turn(payload)
 signal ui_request_recover(payload)
 signal ui_request_undo(payload)
 signal ui_request_redo(payload)
+signal interaction_failed(payload)
+signal phase_changed(payload)         # payload: { "phase_enum": int, "phase_name": String }
+signal round_started(payload)         # payload: { "round_number": int }
+signal unit_turn_started(payload) # payload: { "unit": Unit }
+signal unit_turn_ended(payload)     # payload: { "unit": Unit }
 
 # --- FILA ---
 var _event_queue: Array[GameEvent] = []

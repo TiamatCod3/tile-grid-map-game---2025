@@ -22,20 +22,33 @@ var unit: Node2D
 # O NOVO CONTROLADOR
 var interaction_controller: InteractionController
 
+var selected_heroes_resources: Array[UnitStats] = [
+	preload("res://Gameplay/Stats/warior_stats.tres"), 
+	preload("res://Gameplay/Stats/mage_stats.tres")
+]
+
 func _ready() -> void:
-	# Aguarda um frame para garantir que a árvore está pronta
 	await get_tree().process_frame
 	
+	if not current_mission: # Mudou de 'mission' para 'current_mission' baseado no seu arquivo
+		push_error("ERRO: Nenhuma missão carregada!")
+		return
+
+	# 1. Constrói o Grid Lógico (Paredes, Chão)
 	build_logical_grid()
 	
-	# Se a grid foi criada com sucesso e tem herói, registra a posição inicial
-	if unit:
-		register_unit_position(unit, unit.grid_pos, true)
-		print("🎮 GameBoard: Pronto e Herói posicionado.")
-		
+	# ... (Spawn de Objetos se houver) ...
+	
+	# 3. Spawna HERÓIS (Chamada Correta)
+	# selected_heroes_resources deve ser preenchido (simulado por enquanto)
+	var active_heroes = GridBuilder.spawn_heroes(selected_heroes_resources, current_mission, self)
+	
+	# 4. Inicializa Controller
 	interaction_controller = InteractionController.new(self)
 	add_child(interaction_controller)
-	TurnManager.start_turn()
+	
+	# 5. Inicia o Turn Manager
+	TurnManager.start_game(active_heroes)	
 
 func _process(_delta: float) -> void:
 	# Verifica o que está embaixo do mouse neste momento
@@ -63,7 +76,7 @@ func build_logical_grid():
 	id_to_coord = build_data["id_to_coord"]
 	
 	# Localiza o herói
-	if grid.has(current_mission.player_spawns):
+	if grid.has(current_mission.heroes_spawn_points):
 		var spawn_cell = grid[current_mission.player_spawns]
 		if not spawn_cell.units.is_empty():
 			unit = spawn_cell.units[0]

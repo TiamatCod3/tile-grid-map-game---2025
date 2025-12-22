@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c40e42i307jsd"]
 
 [ext_resource type="Script" uid="uid://bhe8ymda82dxj" path="res://Gameplay/Units/unit.gd" id="1_5ofeh"]
-[ext_resource type="Resource" uid="uid://diu54nkhtlvw4" path="res://Gameplay/Stats/hero_stats.tres" id="2_wj7n8"]
+[ext_resource type="Resource" uid="uid://diu54nkhtlvw4" path="res://Gameplay/Stats/warior_stats.tres" id="2_wj7n8"]
 [ext_resource type="Texture2D" uid="uid://grdaqt3mbh82" path="res://Assets/icon.svg" id="2_xebd5"]
 [ext_resource type="Resource" uid="uid://bbf51m5v7ia33" path="res://Gameplay/Combat/Data/one_hand_sword.tres" id="3_wj7n8"]
 

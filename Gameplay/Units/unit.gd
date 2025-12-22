@@ -1,9 +1,12 @@
 class_name Unit
 extends Node2D
 
+@export var stats: UnitStats # Seu recurso atual
+var current_ap: int = 0
+var current_mp: int = 0
 # Aqui conectamos o Resource. 
 # O "Stats" é a ficha do personagem.
-@export var stats: UnitStats
+
 
 # DADOS: Onde estou no Grid Lógico? (A Verdade)
 # Isso é diferente de 'position' (que é visual/pixels)
@@ -28,25 +31,27 @@ var is_dead: bool = false
 const DEFAULT_WEAPON_PATH = "res://Gameplay/Combat/Data/Unarmed.tres"
 
 func _ready() -> void:
-	# Importante: Se Unit herda de algo que tem _ready, chame super()
-	# No seu caso, Unit herda de Node2D, então não é estritamente necessário, mas é boa prática.
-	
 	if stats:
+		# Cria uma cópia única para esse boneco (para não alterar o arquivo original se tomar dano)
 		stats = stats.duplicate()
+		
+		# CONECTA A MORTE
 		if not stats.health_depleted.is_connected(_on_death):
 			stats.health_depleted.connect(_on_death)
+		
+		# --- NOVO: CONFIGURAÇÃO VISUAL ---
+		# Se tivermos um sprite definido no Stats, aplicamos no nó visual
+		if stats.sprite and has_node("Visual"): # Assumindo que o Sprite2D chama "Visual"
+			$Visual.texture = stats.sprite
+			
+		# Inicializa Recursos
+		current_ap = stats.max_ap
+		current_mp = 0 # ou stats.max_mp se quiser começar com movimento
 	else:
 		stats = UnitStats.new()
-
-	# --- LÓGICA DA ARMA PADRÃO ---
-	if equipped_weapon == null:
-		# Verifica se o arquivo existe para evitar crash
-		if ResourceLoader.exists(DEFAULT_WEAPON_PATH):
-			equipped_weapon = load(DEFAULT_WEAPON_PATH)
-			# print(name + ": Nenhuma arma equipada. Usando " + equipped_weapon.name)
-		else:
-			push_error("ERRO: Não foi possível carregar a arma padrão em: " + DEFAULT_WEAPON_PATH)
-
+		# Valores padrão de fallback
+		current_ap = 3
+		
 # A FUNÇÃO DE MORTE
 func _on_death():
 	if is_dead: return # Evita morrer duas vezes
@@ -210,3 +215,26 @@ func disarm() -> void:
 	
 	# Carrega o Unarmed
 	equipped_weapon = load(DEFAULT_WEAPON_PATH)
+
+# Adicione esta função na sua classe Unit
+func traverse_path_visual(path: Array, board: GameBoard) -> void:
+	is_moving = true
+	
+	for step in path:
+		var tween = create_tween()
+		# Nota: Movi a lógica de tween para cá. 
+		# O Command apenas diz "ande", a Unit decide "como" (velocidade, easing).
+		tween.tween_property(self, "position", board.map_to_local(step), 0.2)
+		await tween.finished
+		
+		# O registro no board acontece passo a passo
+		board.register_unit_position(self, step)
+			
+	is_moving = false
+
+func reset_turn_resources():
+	if stats:
+		current_ap = stats.max_ap
+	else:
+		current_ap = 3
+	current_mp = 0

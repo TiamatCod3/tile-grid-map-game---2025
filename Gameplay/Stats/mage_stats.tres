@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="UnitStats" load_steps=3 format=3 uid="uid://c5quel86dqdlv"]
+
+[ext_resource type="Texture2D" uid="uid://b6kcnsy07fmxn" path="res://Assets/Heroes/GirlDarkExample-Unique.png" id="1_4ex7w"]
+[ext_resource type="Script" uid="uid://cgu2r3vuvcifw" path="res://Gameplay/Stats/unit_stats.gd" id="2_4jwqo"]
+
+[resource]
+script = ExtResource("2_4jwqo")
+unit_name = "Zeniit"
+portrait = ExtResource("1_4ex7w")
+sprite = ExtResource("1_4ex7w")
+max_health = 10
+current_health = 10
+attack_damage = 2
+metadata/_custom_type_script = "uid://cgu2r3vuvcifw"
