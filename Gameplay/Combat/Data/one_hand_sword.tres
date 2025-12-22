@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="MeleeWeapon" load_steps=2 format=3 uid="uid://bbf51m5v7ia33"]
+
+[ext_resource type="Script" uid="uid://dss6xig3ecvyf" path="res://Gameplay/Combat/melee_weapon.gd" id="1_r57fh"]
+
+[resource]
+script = ExtResource("1_r57fh")
+name = "One Hand Sword"
+damage = 2
+metadata/_custom_type_script = "uid://dss6xig3ecvyf"

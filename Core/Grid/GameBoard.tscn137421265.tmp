@@ -1,0 +1,77 @@
+[gd_scene load_steps=14 format=4 uid="uid://d1m35nbu5bsvd"]
+
+[ext_resource type="Texture2D" uid="uid://grdaqt3mbh82" path="res://icon.svg" id="1_hc8ni"]
+[ext_resource type="Texture2D" uid="uid://25c747vjophb" path="res://Wall Floor-Sheet.png" id="1_krw4d"]
+[ext_resource type="Script" uid="uid://cfgm1ge4gq4n3" path="res://Core/Grid/game_board.gd" id="1_wjhe5"]
+[ext_resource type="Texture2D" uid="uid://cw5gio7hpuqv" path="res://Wall Floor-Sheet2.png" id="3_3h27l"]
+[ext_resource type="PackedScene" uid="uid://c40e42i307jsd" path="res://Gameplay/Units/Unit.tscn" id="3_12o3y"]
+[ext_resource type="PackedScene" uid="uid://bdp5sbarxxkfq" path="res://UI/HUD.tscn" id="6_ih8t5"]
+[ext_resource type="PackedScene" uid="uid://cjnc45m662yt5" path="res://Gameplay/Units/Enemy.tscn" id="7_3loh6"]
+[ext_resource type="PackedScene" uid="uid://bow8x3oitt11j" path="res://Gameplay/World/chest.tscn" id="8_6fps4"]
+[ext_resource type="PackedScene" uid="uid://0s472i0hag5w" path="res://Gameplay/World/door.tscn" id="9_sish7"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3h27l"]
+texture = ExtResource("1_krw4d")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+1:0/0/custom_data_0 = true
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hc8ni"]
+texture = ExtResource("1_hc8ni")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+1:0/0/custom_data_0 = true
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ih8t5"]
+texture = ExtResource("3_3h27l")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+1:1/0/custom_data_0 = true
+2:1/0 = 0
+0:2/0 = 0
+1:2/0 = 0
+2:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_12o3y"]
+tile_size = Vector2i(64, 64)
+custom_data_layer_0/name = "is_solid"
+custom_data_layer_0/type = 1
+sources/1 = SubResource("TileSetAtlasSource_hc8ni")
+sources/0 = SubResource("TileSetAtlasSource_3h27l")
+sources/2 = SubResource("TileSetAtlasSource_ih8t5")
+
+[node name="GameBoard" type="TileMapLayer"]
+tile_map_data = PackedByteArray("AAAAAAAAAgAAAAAAAAAAAAEAAgAAAAEAAAAAAAIAAgAAAAIAAAAAAAMAAgAAAAAAAAAAAAQAAgAAAAEAAAAAAAUAAgAAAAIAAAABAAAAAgABAAAAAAABAAEAAAABAAAAAAABAAIAAgABAAIAAAABAAMAAgABAAAAAAABAAQAAAABAAAAAAABAAUAAgABAAIAAAACAAAAAgACAAAAAAACAAEAAgACAAEAAAACAAIAAgACAAIAAAACAAMAAgACAAAAAAACAAQAAgACAAEAAAACAAUAAgACAAIAAAADAAAAAgABAAAAAAADAAEAAgABAAEAAAADAAIAAgAAAAIAAAAEAAAAAgABAAAAAAAEAAEAAgABAAEAAAAEAAIAAgABAAIAAAAFAAAAAgABAAAAAAAFAAEAAgABAAEAAAAFAAIAAgACAAIAAAA=")
+tile_set = SubResource("TileSet_12o3y")
+script = ExtResource("1_wjhe5")
+
+[node name="Door" parent="." instance=ExtResource("9_sish7")]
+position = Vector2(216, 23)
+
+[node name="Chest" parent="." instance=ExtResource("8_6fps4")]
+position = Vector2(361, 26)
+
+[node name="Cursor" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 0.91764706, 0.42745098)
+z_index = 1
+position = Vector2(162, 97)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_hc8ni")
+
+[node name="Unit" parent="." instance=ExtResource("3_12o3y")]
+
+[node name="Hud" parent="." instance=ExtResource("6_ih8t5")]
+
+[node name="Enemy" parent="." instance=ExtResource("7_3loh6")]
+position = Vector2(24, 103)
+
+[node name="Chest2" parent="." instance=ExtResource("8_6fps4")]
+position = Vector2(69, 25)

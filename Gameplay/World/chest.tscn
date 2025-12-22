@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://bow8x3oitt11j"]
+
+[ext_resource type="Script" uid="uid://ccs0r4d21ynj" path="res://Gameplay/World/chest.gd" id="1_6vgnv"]
+[ext_resource type="Texture2D" uid="uid://bag1fm2drebtl" path="res://Assets/chest2.png" id="2_nmxdt"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u3jys"]
+atlas = ExtResource("2_nmxdt")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nmxdt"]
+
+[node name="Chest" type="StaticBody2D"]
+input_pickable = true
+script = ExtResource("1_6vgnv")
+
+[node name="Visual" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = SubResource("AtlasTexture_u3jys")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_nmxdt")

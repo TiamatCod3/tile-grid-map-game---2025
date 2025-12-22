@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MapTile" load_steps=5 format=3 uid="uid://nvksbynpaex1"]
+
+[ext_resource type="Script" uid="uid://s40wtashxk3d" path="res://Core/Data/cell_data.gd" id="1_omprs"]
+[ext_resource type="Resource" uid="uid://cm0s35pnjd2m4" path="res://Core/Data/Cells/open_floor.tres" id="3_w4ta2"]
+[ext_resource type="Texture2D" uid="uid://drt5ehqeemfl0" path="res://Assets/Tiles/bridge.png" id="4_s6gqf"]
+[ext_resource type="Script" uid="uid://dncw06ffni2q7" path="res://Core/Data/map_tile.gd" id="7_d7fp7"]
+
+[resource]
+script = ExtResource("7_d7fp7")
+tile_id = "1R"
+texture = ExtResource("4_s6gqf")
+cells = Array[ExtResource("1_omprs")]([ExtResource("3_w4ta2")])
+dimensions = Vector2i(1, 1)
+metadata/_custom_type_script = "uid://dncw06ffni2q7"

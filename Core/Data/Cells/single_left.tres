@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CellData" load_steps=2 format=3 uid="uid://b0hdx7fs1hnws"]
+
+[ext_resource type="Script" uid="uid://s40wtashxk3d" path="res://Core/Data/cell_data.gd" id="1_ip3g8"]
+
+[resource]
+script = ExtResource("1_ip3g8")
+wall_left = true
+metadata/_custom_type_script = "uid://s40wtashxk3d"

@@ -1,0 +1,12 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjnc45m662yt5"]
+
+[ext_resource type="PackedScene" uid="uid://c40e42i307jsd" path="res://Gameplay/Units/Unit.tscn" id="1_qgeda"]
+[ext_resource type="Script" uid="uid://dob7faeblcebb" path="res://Gameplay/Units/enemy.gd" id="2_0sm0f"]
+[ext_resource type="Resource" uid="uid://cqu5o10c0vyb5" path="res://Gameplay/Stats/zombie_stats.tres" id="3_gpkr6"]
+
+[node name="Enemy" instance=ExtResource("1_qgeda")]
+script = ExtResource("2_0sm0f")
+stats = ExtResource("3_gpkr6")
+
+[node name="Visual" parent="." index="0"]
+modulate = Color(0.5372549, 0.16078432, 1, 1)

@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MapTile" load_steps=11 format=3 uid="uid://y442av20xaak"]
+
+[ext_resource type="Script" uid="uid://s40wtashxk3d" path="res://Core/Data/cell_data.gd" id="1_mk20w"]
+[ext_resource type="Script" uid="uid://dncw06ffni2q7" path="res://Core/Data/map_tile.gd" id="2_8m2gd"]
+[ext_resource type="Resource" uid="uid://co2duyfpxb3rd" path="res://Core/Data/Cells/triple_right.tres" id="2_8t18e"]
+[ext_resource type="Texture2D" uid="uid://bql76pp3hywjk" path="res://Assets/Tiles/3R.png" id="3_8m2gd"]
+[ext_resource type="Resource" uid="uid://dc80mhxdnysph" path="res://Core/Data/Cells/triple_left.tres" id="3_ghjkk"]
+[ext_resource type="Resource" uid="uid://b0hdx7fs1hnws" path="res://Core/Data/Cells/single_left.tres" id="4_0xtsk"]
+[ext_resource type="Resource" uid="uid://bg5pud0v8xhld" path="res://Core/Data/Cells/single_up.tres" id="5_ykvqv"]
+[ext_resource type="Resource" uid="uid://b0fjp3c2k0dav" path="res://Core/Data/Cells/double_up_down.tres" id="6_dc0li"]
+[ext_resource type="Resource" uid="uid://bu4hl0j6w5v77" path="res://Core/Data/Cells/single_down.tres" id="7_5ijlk"]
+[ext_resource type="Resource" uid="uid://c1tandsuka3j5" path="res://Core/Data/Cells/single_right.tres" id="8_v6btj"]
+
+[resource]
+script = ExtResource("2_8m2gd")
+tile_id = "3R"
+texture = ExtResource("3_8m2gd")
+cells = Array[ExtResource("1_mk20w")]([ExtResource("2_8t18e"), ExtResource("3_ghjkk"), ExtResource("4_0xtsk"), ExtResource("5_ykvqv"), ExtResource("6_dc0li"), ExtResource("7_5ijlk"), ExtResource("8_v6btj"), ExtResource("2_8t18e"), ExtResource("3_ghjkk")])
+metadata/_custom_type_script = "uid://dncw06ffni2q7"

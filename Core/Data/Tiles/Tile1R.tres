@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="MapTile" load_steps=9 format=3 uid="uid://c2hj8q04opbr4"]
+
+[ext_resource type="Script" uid="uid://s40wtashxk3d" path="res://Core/Data/cell_data.gd" id="1_yjxxa"]
+[ext_resource type="Resource" uid="uid://cm0s35pnjd2m4" path="res://Core/Data/Cells/open_floor.tres" id="2_5cykb"]
+[ext_resource type="Script" uid="uid://dncw06ffni2q7" path="res://Core/Data/map_tile.gd" id="2_gle8g"]
+[ext_resource type="Resource" uid="uid://bu4hl0j6w5v77" path="res://Core/Data/Cells/single_down.tres" id="2_io1bd"]
+[ext_resource type="Texture2D" uid="uid://jq3hl2katygo" path="res://Assets/Tiles/1R.png" id="3_gle8g"]
+[ext_resource type="Resource" uid="uid://dwh2bmiwdo0mb" path="res://Core/Data/Cells/triple_down.tres" id="4_tv25c"]
+[ext_resource type="Resource" uid="uid://qkfd5ifl7gsy" path="res://Core/Data/Cells/double_right_left.tres" id="5_rda5g"]
+[ext_resource type="Resource" uid="uid://c6htgyy1vefrx" path="res://Core/Data/Cells/triple_up.tres" id="6_q2dj4"]
+
+[resource]
+script = ExtResource("2_gle8g")
+tile_id = "1R"
+texture = ExtResource("3_gle8g")
+cells = Array[ExtResource("1_yjxxa")]([ExtResource("2_io1bd"), ExtResource("2_5cykb"), ExtResource("2_io1bd"), ExtResource("4_tv25c"), ExtResource("5_rda5g"), ExtResource("4_tv25c"), ExtResource("6_q2dj4"), ExtResource("5_rda5g"), ExtResource("6_q2dj4")])
+metadata/_custom_type_script = "uid://dncw06ffni2q7"

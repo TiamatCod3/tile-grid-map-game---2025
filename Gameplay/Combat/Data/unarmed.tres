@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="MeleeWeapon" load_steps=2 format=3 uid="uid://qae3vkp85ahd"]
+
+[ext_resource type="Script" uid="uid://dss6xig3ecvyf" path="res://Gameplay/Combat/melee_weapon.gd" id="1_rdu34"]
+
+[resource]
+script = ExtResource("1_rdu34")
+name = "Unarmed"
+max_range = 0
+metadata/_custom_type_script = "uid://dss6xig3ecvyf"
