@@ -4,6 +4,7 @@ extends Node2D
 @onready var hud: CanvasLayer = $HUD # (Opcional, se já tiver criado)
 
 func _ready() -> void:
+	_setup_camera_view()
 	pass
 	
 

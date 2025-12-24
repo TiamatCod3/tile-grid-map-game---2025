@@ -137,10 +137,8 @@ func handle_door_interaction(door: Door):
 
 # Conecta dois pontos no AStar dinamicamente
 func open_passage_in_astar(pos_a: Vector2i, pos_b: Vector2i):
-	print("open_passage")
 	var id_a = grid_to_astar_id.get(pos_a, -1)
 	var id_b = grid_to_astar_id.get(pos_b, -1)
-	print(id_a, id_b)
 	if id_a != -1 and id_b != -1:
 		if not astar.are_points_connected(id_a, id_b):
 			astar.connect_points(id_a, id_b)
@@ -150,7 +148,8 @@ func open_passage_in_astar(pos_a: Vector2i, pos_b: Vector2i):
 # --- 4. MOVIMENTO E COMBATE ---
 func handle_player_movement(hero_unit: Unit, destination: Vector2i):
 	if not grid.has(destination): return
-	print(grid_to_astar_id[destination])
+	if debug_mode:
+		print(grid_to_astar_id[destination])
 	var path_stack = get_path_stack(hero_unit.grid_pos, destination)
 	
 	if path_stack.is_empty():

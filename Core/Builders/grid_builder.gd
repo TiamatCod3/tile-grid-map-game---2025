@@ -255,7 +255,6 @@ static func _spawn_objects(mission: MissionSetup, grid: Dictionary, board: TileM
 		door.coord_b = grid_coord_b
 		door.is_open = mission.doors[door_ids]
 		
-		#print()
 		var is_open = mission.doors[door_ids]
 		var is_vertical = dir.x == 0
 		# Rotação Visual (Assumindo que o Sprite original da porta é em Pé / Vertical)
@@ -273,7 +272,6 @@ static func _spawn_objects(mission: MissionSetup, grid: Dictionary, board: TileM
 
 static func spawn_heroes(heroes_stats: Array[UnitStats], mission: MissionSetup, board: GameBoard) -> Array[Unit]:
 	var spawned_units: Array[Unit] = []
-	print(heroes_stats)
 	var hero_scene = load("res://Gameplay/Units/Unit.tscn") # Sua cena base genérica
 	
 	for i in range(heroes_stats.size()):

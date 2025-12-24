@@ -11,7 +11,6 @@ func execute() -> bool:
 	if TurnManager.current_phase != TurnManager.GamePhase.HERO_PHASE:
 		return false
 		
-	print("Turn End")
 
 	# 2. Finaliza a lógica no Manager (que chama o próximo player)
 	TurnManager.end_current_turn()
