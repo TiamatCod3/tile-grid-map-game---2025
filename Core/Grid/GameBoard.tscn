@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://d1m35nbu5bsvd"]
+[gd_scene load_steps=14 format=3 uid="uid://d1m35nbu5bsvd"]
 
 [ext_resource type="Texture2D" uid="uid://grdaqt3mbh82" path="res://Assets/icon.svg" id="1_hc8ni"]
 [ext_resource type="Script" uid="uid://cfgm1ge4gq4n3" path="res://Core/Grid/game_board.gd" id="1_wjhe5"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://b3vtbmny7x52c" path="res://Assets/darkbringer.png" id="3_w6xus"]
 [ext_resource type="Texture2D" uid="uid://c32dab0y5latf" path="res://Assets/lightbringer.png" id="4_q2ad6"]
 [ext_resource type="Texture2D" uid="uid://i6huor6qo1dk" path="res://Assets/lightdarkbringer.png" id="5_f0v52"]
-[ext_resource type="PackedScene" uid="uid://bdp5sbarxxkfq" path="res://UI/HUD/HUD.tscn" id="6_ih8t5"]
 [ext_resource type="Resource" uid="uid://bcv6lo6buru80" path="res://Core/Data/Mission/first.tres" id="7_52jao"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hc8ni"]
@@ -74,5 +73,3 @@ tile_set = SubResource("TileSet_12o3y")
 script = ExtResource("1_wjhe5")
 current_mission = ExtResource("7_52jao")
 debug_mode = true
-
-[node name="Hud" parent="." instance=ExtResource("6_ih8t5")]
