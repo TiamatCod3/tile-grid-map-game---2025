@@ -1,12 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://l7jbrvl3ra3q"]
+[gd_scene load_steps=6 format=3 uid="uid://l7jbrvl3ra3q"]
 
 [ext_resource type="Script" uid="uid://cnk6knoykp8ws" path="res://main.gd" id="1_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://bdp5sbarxxkfq" path="res://UI/HUD/HUD.tscn" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://d1m35nbu5bsvd" path="res://Core/Grid/GameBoard.tscn" id="2_0xm2m"]
+[ext_resource type="Resource" uid="uid://bcv6lo6buru80" path="res://Core/Data/Mission/first.tres" id="2_lquwl"]
 [ext_resource type="PackedScene" uid="uid://bxwk8d7bhi88d" path="res://UI/Controllers/camera_controller.tscn" id="3_h2yge"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_1bvp3")
+mission_data = ExtResource("2_lquwl")
 
 [node name="Hud" parent="." instance=ExtResource("1_ig7tw")]
 

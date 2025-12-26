@@ -57,12 +57,15 @@ func _activate_next_hero():
 
 	active_unit = activation_queue.pop_front()
 	
-	# Reseta os recursos (AP/MP) desta unidade específica
 	if active_unit.has_method("reset_turn_resources"):
 		active_unit.reset_turn_resources()
 	
 	print(">>> Turno de: %s" % active_unit.name)
 	_notify_resources()
+	
+	# --- AQUI: Usamos o dispatch do seu sistema atual ---
+	# GameEvents.UNIT_TURN_STARTED deve ser a string "unit_turn_started"
+	EventManager.dispatch(GameEvents.UNIT_TURN_STARTED, { "unit": active_unit })
 
 # Chamado quando o botão da UI é clicado
 func _on_ui_end_turn(_payload):

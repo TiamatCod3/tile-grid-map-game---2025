@@ -28,7 +28,24 @@ func _unhandled_input(event: InputEvent) -> void:
 		InputState.CARD_DRAGGING:
 			# Deixa o script da carta resolver, ou solta a carta aqui
 			pass
-
+func _process(_delta: float) -> void:
+	# 1. Pergunta ao GameBoard qual objeto físico está sob o mouse
+	# (Essa função helper ficou lá no GameBoard, então reutilizamos ela)
+	var obj = game_board.get_physics_object_under_mouse()
+	
+	# 2. Lógica do Cursor
+	# Se for Porta FECHADA -> Mãozinha
+	if obj and obj is Door and not obj.is_open:
+		Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
+	
+	# Se for Inimigo (Exemplo futuro) -> Espada
+	# elif obj and obj.is_in_group("Enemies"):
+	# 	Input.set_default_cursor_shape(Input.CURSOR_CROSS) # ou customizado
+	
+	# Nada relevante -> Seta Padrão
+	else:
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+		
 func _handle_map_click():
 	var active_hero = TurnManager.active_unit
 	if not active_hero: return

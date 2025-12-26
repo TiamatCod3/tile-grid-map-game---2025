@@ -8,22 +8,27 @@ extends Camera2D
 
 @export_group("Zoom")
 @export var min_zoom: float = 0.5
-@export var max_zoom: float = 4.0
+@export var max_zoom: float = 5.0
 @export var zoom_speed: float = 0.1    # Quanto muda por rolagem do mouse
 @export var zoom_smooth: float = 10.0  # Suavidade da transição de zoom
 
 # --- ESTADO INTERNO ---
-var target_zoom: Vector2 = Vector2.ONE * 3
+var target_zoom: Vector2 = Vector2.ONE
 var follow_target: Node2D = null
 var is_following: bool = false
 
 func _ready() -> void:
-	make_current() # Garante que esta é a câmera ativa do jogo
-	target_zoom = zoom * 3 # Começa com o zoom que estiver na cena
-	
-	# Habilita o smoothing nativo do Godot para movimento suave
+	make_current()
+	target_zoom = zoom * 3
 	position_smoothing_enabled = true 
-	position_smoothing_speed = 5.0
+	
+	# --- CORREÇÃO AQUI: Usando o padrão do seu HUD ---
+	# Conectamos diretamente ao sinal definido no script do EventManager
+	if EventManager.has_signal("unit_turn_started"):
+		EventManager.unit_turn_started.connect(_on_unit_turn_started)
+	else:
+		push_error("Sinal 'unit_turn_started' não encontrado no EventManager!")
+	
 
 func _process(delta: float) -> void:
 	_handle_input(delta)
@@ -95,10 +100,22 @@ func setup_camera_on_grid(center_pos: Vector2, tile_size: int):
 	
 	print("🎥 Câmera: Ajustada para centro %s com zoom %.2f" % [center_pos, calculated_zoom])
 
+# --- CALLBACK DO EVENTO ---
+# O seu EventManager sempre manda um dicionário 'payload' como argumento
+func _on_unit_turn_started(payload: Dictionary):
+	var unit = payload.get("unit")
+	
+	if unit:
+		_focus_on_target(unit)
+		
 # 2. Foca no Herói Ativo (Chamado pelo 'Espaço' ou início de turno)
 func focus_on_active_unit():
 	var unit = TurnManager.active_unit
 	if unit:
-		follow_target = unit
+		_focus_on_target(unit)
+
+func _focus_on_target(target: Node2D):
+	if target:
+		follow_target = target
 		is_following = true
-		print("🎥 Câmera: Seguindo %s" % unit.name)
+		print("🎥 Câmera: Seguindo automaticamente -> %s" % target.name)
