@@ -11,9 +11,9 @@ var current_phase: int = GamePhase.HERO_PHASE
 var round_number: int = 1
 
 # --- GERENCIAMENTO DE UNIDADES ---
-var heroes_roster: Array[Unit] = []
-var activation_queue: Array[Unit] = [] 
-var active_unit: Unit = null
+var heroes_roster = []
+var activation_queue = [] 
+var active_unit = null
 
 # --- PROXY DE RECURSOS (Lê/Escreve direto na Unidade Ativa) ---
 var current_ap: int:
@@ -38,7 +38,7 @@ func _ready() -> void:
 		EventManager.ui_request_end_turn.connect(_on_ui_end_turn)
 
 # --- LOOP DE JOGO ---
-func start_game(heroes: Array[Unit]):
+func start_game(heroes):
 	heroes_roster = heroes
 	round_number = 1
 	_start_round()

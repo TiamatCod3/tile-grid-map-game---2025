@@ -20,8 +20,10 @@ static func build(mission: MissionSetup, board: TileMapLayer) -> Dictionary:
 		"astar": AStar2D.new(), # Grafo de navegação
 		"grid_to_astar_id": {}, # De Coord -> ID
 		"id_to_coord": {},      # De ID -> Coord
-		"hero": null            # Referência à unidade do jogador
+		"hero": null,            # Referência à unidade do jogador
+		"enemies": [] # <--- Novo campo para guardar a lista
 	}
+
 
 	# 3. CONSTRUÇÃO DO MAPA (TILES UNIFICADOS)
 	# Iteramos sobre o layout unificado. Não existe mais multiplicação por 3 obrigatória.
@@ -70,6 +72,9 @@ static func build(mission: MissionSetup, board: TileMapLayer) -> Dictionary:
 	# 7. HEROIS
 	# Posiciona o jogador
 	#_spawn_heroes(mission, data, board)
+#	Inimigos
+	# Passamos data.grid para ele preencher as células corretamente
+	data["enemies"] = _spawn_enemies(mission, board, data.grid, data.id_to_coord)
 
 	print("✅ GridBuilder: Construção concluída com %d nós navegáveis." % id_counter)
 	return data
@@ -199,6 +204,7 @@ static func _connect_astar(grid, astar, ids):
 					if id_b != -1 and not astar.are_points_connected(id_a, id_b):
 						astar.connect_points(id_a, id_b)
 
+
 static func _spawn_objects(mission: MissionSetup, grid: Dictionary, board: TileMapLayer, id_to_coord: Dictionary, astar: AStar2D):
 	var door_scene = load("res://Gameplay/World/Door.tscn")
 	print("\n🚪 --- INÍCIO SPAWN DE PORTAS ---")
@@ -300,3 +306,60 @@ static func spawn_heroes(heroes_stats: Array[UnitStats], mission: MissionSetup, 
 		spawned_units.append(hero_instance)
 		
 	return spawned_units
+
+static func _spawn_enemies(mission: MissionSetup, board: GameBoard, grid: Dictionary, id_to_coord: Dictionary) -> Array[Unit]:
+	var spawned_enemies: Array[Unit] = []
+	var enemy_scene = load("res://Gameplay/Units/Enemy.tscn")
+	
+	for grid_id in mission.enemies_spawn_points.keys():
+		# Validação de segurança
+		if not id_to_coord.has(grid_id):
+			continue
+			
+		var stats = mission.enemies_spawn_points[grid_id]
+		var grid_pos = id_to_coord[grid_id]
+		
+		# 1. Instanciação
+		var enemy_instance: Enemy = enemy_scene.instantiate()
+		enemy_instance.name = stats.unit_name
+		enemy_instance.stats = stats
+		enemy_instance.grid_pos = grid_pos
+		enemy_instance.position = board.map_to_local(grid_pos)
+		
+		# 2. Adiciona Visualmente ao Board
+		board.add_child(enemy_instance)
+		
+		# 3. Adiciona Logicamente à Célula (A CORREÇÃO É AQUI)
+		# Em vez de chamar board.register_unit, mexemos direto no dado cru
+		if grid.has(grid_pos):
+			grid[grid_pos].add_unit(enemy_instance)
+		
+		spawned_enemies.append(enemy_instance)
+		
+	return spawned_enemies
+	#for i in range(heroes_stats.size()):
+		#if i >= mission.heroes_spawn_points.size():
+			#push_warning("Mais heróis do que pontos de spawn!")
+			#break
+			#
+		#var stats = heroes_stats[i]
+		#var spawn_grid_pos = mission.heroes_spawn_points[i]
+		#
+		## Instancia
+		#var hero_instance = hero_scene.instantiate()
+		#
+		## Configura
+		#hero_instance.name = stats.unit_name
+		#hero_instance.stats = stats # Injeta o Resource (o _ready da Unit fará o resto)
+		#hero_instance.grid_pos = spawn_grid_pos
+		#hero_instance.position = board.map_to_local(spawn_grid_pos)
+		#
+		## Adiciona à cena
+		#board.add_child(hero_instance)
+		#
+		## Registra no Board
+		#board.register_unit_position(hero_instance, spawn_grid_pos, true)
+		#
+		#spawned_units.append(hero_instance)
+		#
+	#return spawned_units

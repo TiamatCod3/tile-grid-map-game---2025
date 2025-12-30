@@ -13,6 +13,8 @@ var astar: AStar2D = AStar2D.new()
 var grid: Dictionary = {}           # { Vector2i: GridCell }
 var grid_to_astar_id: Dictionary = {} # { Vector2i: int }
 var id_to_coord: Dictionary = {}      # { int: Vector2i }
+# Variável para o Main acessar depois
+var active_enemies: Array[Unit] = []
 
 # Controlador de Input (Instanciado no setup)
 var interaction_controller: InteractionController
@@ -44,6 +46,12 @@ func setup_board(mission: MissionSetup) -> void:
 		interaction_controller = InteractionController.new(self)
 		add_child(interaction_controller)
 
+	# Recupera a lista de inimigos criada
+	active_enemies = build_data.get("enemies", [])
+	# Opcional: Reorganiza visualmente AGORA, caso tenha 2 inimigos no mesmo tile
+	for enemy in active_enemies:
+		reorganize_visuals(enemy.grid_pos, true)
+		
 	if debug_mode:
 		queue_redraw()
 
@@ -99,25 +107,29 @@ func get_unit_at_grid_pos(grid_pos: Vector2i) -> Unit:
 
 # --- GERENCIAMENTO VISUAL DE UNIDADES ---
 
-func register_unit_position(hero_unit: Unit, new_pos: Vector2i, instant: bool = false):
-	var old_pos = hero_unit.grid_pos
+func register_unit_position(unit: Unit, new_pos: Vector2i, instant: bool = false):
+	print(unit.name, " - ", new_pos)
+	var old_pos = unit.grid_pos
 	
 	# Remove da célula antiga
 	if grid.has(old_pos):
-		grid[old_pos].remove_unit(hero_unit)
+		grid[old_pos].remove_unit(unit)
 		reorganize_visuals(old_pos) 
 		
-	hero_unit.grid_pos = new_pos
+	unit.grid_pos = new_pos
 	
 	# Adiciona na nova
 	if grid.has(new_pos):
-		grid[new_pos].add_unit(hero_unit)
+		print("Unit: " , unit.name)
+		grid[new_pos].add_unit(unit)
 		reorganize_visuals(new_pos, instant)
 
 func reorganize_visuals(coord: Vector2i, instant: bool = false):
 	if not grid.has(coord): return
 	
 	var cell: GridCell = grid[coord]
+	print("Cell units")
+	print(cell.units)
 	var active_units = cell.units.filter(func(u): return not u.get("is_dead"))
 	
 	var count = active_units.size()

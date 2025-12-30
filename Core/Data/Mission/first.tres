@@ -1,8 +1,11 @@
-[gd_resource type="Resource" script_class="MissionSetup" load_steps=8 format=3 uid="uid://bcv6lo6buru80"]
+[gd_resource type="Resource" script_class="MissionSetup" load_steps=11 format=3 uid="uid://bcv6lo6buru80"]
 
 [ext_resource type="Script" uid="uid://dncw06ffni2q7" path="res://Core/Data/map_tile.gd" id="1_6m4sx"]
 [ext_resource type="Script" uid="uid://47hes38ln2um" path="res://Core/Data/mission_setup.gd" id="1_hj2fh"]
+[ext_resource type="Script" uid="uid://cgu2r3vuvcifw" path="res://Gameplay/Stats/unit_stats.gd" id="1_khe6m"]
+[ext_resource type="Resource" uid="uid://cqu5o10c0vyb5" path="res://Gameplay/Stats/zombie_stats.tres" id="2_3r4t1"]
 [ext_resource type="Resource" uid="uid://c2hj8q04opbr4" path="res://Core/Data/Tiles/Tile1R.tres" id="2_mbgki"]
+[ext_resource type="Resource" uid="uid://dp4s3hh0433h1" path="res://Gameplay/Stats/golem_stats.tres" id="3_55eru"]
 [ext_resource type="Resource" uid="uid://o0jj0nh4k6ko" path="res://Core/Data/Tiles/Tile2R.tres" id="3_n1jyf"]
 [ext_resource type="Resource" uid="uid://nvksbynpaex1" path="res://Core/Data/Tiles/Bridge.tres" id="4_sj4vx"]
 [ext_resource type="Resource" uid="uid://y442av20xaak" path="res://Core/Data/Tiles/Tile3R.tres" id="5_60k8o"]
@@ -17,6 +20,11 @@ Vector2i(1, 8): ExtResource("5_wsm68"),
 Vector2i(2, 0): ExtResource("2_mbgki"),
 Vector2i(3, 4): ExtResource("5_60k8o"),
 Vector2i(4, 3): ExtResource("4_sj4vx")
+})
+enemies_spawn_points = Dictionary[int, ExtResource("1_khe6m")]({
+1: ExtResource("2_3r4t1"),
+3: ExtResource("3_55eru"),
+8: ExtResource("2_3r4t1")
 })
 layout_rotation = Dictionary[Vector2i, int]({
 Vector2i(6, 0): 1

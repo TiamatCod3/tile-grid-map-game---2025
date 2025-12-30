@@ -228,6 +228,7 @@ func traverse_path_visual(path: Array, board: GameBoard) -> void:
 		await tween.finished
 		
 		# O registro no board acontece passo a passo
+		#board.(self, step)
 		board.register_unit_position(self, step)
 			
 	is_moving = false

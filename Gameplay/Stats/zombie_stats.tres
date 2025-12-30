@@ -1,9 +1,16 @@
-[gd_resource type="Resource" script_class="UnitStats" load_steps=2 format=3 uid="uid://cqu5o10c0vyb5"]
+[gd_resource type="Resource" script_class="UnitStats" load_steps=3 format=3 uid="uid://cqu5o10c0vyb5"]
 
+[ext_resource type="Texture2D" uid="uid://cbmdc4elieu1i" path="res://Assets/Enemies/Golem.png" id="1_6plpb"]
 [ext_resource type="Script" uid="uid://cgu2r3vuvcifw" path="res://Gameplay/Stats/unit_stats.gd" id="1_62svq"]
 
 [resource]
 script = ExtResource("1_62svq")
-max_health = 4
-current_health = 4
+unit_name = "Golem"
+job_class = "Golem"
+portrait = ExtResource("1_6plpb")
+sprite = ExtResource("1_6plpb")
+max_health = 2
+current_health = 2
+attack_damage = 3
+attack_range = 3
 metadata/_custom_type_script = "uid://cgu2r3vuvcifw"

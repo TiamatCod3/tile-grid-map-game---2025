@@ -9,4 +9,4 @@ script = ExtResource("2_0sm0f")
 stats = ExtResource("3_gpkr6")
 
 [node name="Visual" parent="." index="0"]
-modulate = Color(0.5372549, 0.16078432, 1, 1)
+scale = Vector2(1, 1)

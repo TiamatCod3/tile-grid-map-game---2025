@@ -3,7 +3,7 @@ extends Command
 
 # Não precisamos de argumentos específicos no _init, 
 # mas mantemos a assinatura do pai se necessário.
-func _init(_actor: Unit = null, _board: GameBoard = null):
+func _init(_actor = null, _board: GameBoard = null):
 	super(_actor, _board)
 
 func execute() -> bool:

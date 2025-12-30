@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="UnitStats" load_steps=3 format=3 uid="uid://dp4s3hh0433h1"]
+
+[ext_resource type="Texture2D" uid="uid://bm6qp2765p4sd" path="res://Assets/Enemies/Zumbi.png" id="1_xi60k"]
+[ext_resource type="Script" uid="uid://cgu2r3vuvcifw" path="res://Gameplay/Stats/unit_stats.gd" id="2_m07ta"]
+
+[resource]
+script = ExtResource("2_m07ta")
+unit_name = "Zombie"
+job_class = "Zumbi"
+portrait = ExtResource("1_xi60k")
+sprite = ExtResource("1_xi60k")
+metadata/_custom_type_script = "uid://cgu2r3vuvcifw"
