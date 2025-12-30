@@ -7,7 +7,7 @@ extends Node2D
 
 @onready var game_board: GameBoard = $GameBoard
 @onready var camera: CameraController = $CameraController
-@onready var hud: CanvasLayer = $HUD # (Opcional, se já tiver criado)
+@onready var hud: CanvasLayer = $Hud # (Opcional, se já tiver criado)
 
 func _ready() -> void:
 	# Segurança: Verifica se tem missão
