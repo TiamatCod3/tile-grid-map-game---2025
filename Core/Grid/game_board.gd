@@ -10,7 +10,7 @@ const CLUSTER_RADIUS: float = 16.0
 
 # --- SISTEMAS INTERNOS ---
 var astar: AStar2D = AStar2D.new()
-var grid: Dictionary = {}           # { Vector2i: GridCell }
+var grid: Dictionary = {}             # { Vector2i: GridCell }
 var grid_to_astar_id: Dictionary = {} # { Vector2i: int }
 var id_to_coord: Dictionary = {}      # { int: Vector2i }
 # Variável para o Main acessar depois
@@ -48,7 +48,8 @@ func setup_board(mission: MissionSetup) -> void:
 
 	# Recupera a lista de inimigos criada
 	active_enemies = build_data.get("enemies", [])
-	# Opcional: Reorganiza visualmente AGORA, caso tenha 2 inimigos no mesmo tile
+	
+	# Organiza visualmente AGORA (Instantâneo)
 	for enemy in active_enemies:
 		reorganize_visuals(enemy.grid_pos, true)
 		
@@ -57,7 +58,6 @@ func setup_board(mission: MissionSetup) -> void:
 
 # --- UTILS DE PATHFINDING E GRID ---
 
-# Chamado quando uma porta abre (via InteractCommand ou Builder)
 func open_passage_in_astar(pos_a: Vector2i, pos_b: Vector2i):
 	var id_a = grid_to_astar_id.get(pos_a, -1)
 	var id_b = grid_to_astar_id.get(pos_b, -1)
@@ -89,11 +89,11 @@ func get_physics_object_under_mouse() -> Node:
 	var space_state = get_world_2d().direct_space_state
 	var query = PhysicsPointQueryParameters2D.new()
 	query.position = get_global_mouse_position()
-	query.collision_mask = 2147483647 
+	query.collision_mask = 2147483647
 	query.collide_with_bodies = true
 	
 	var result = space_state.intersect_point(query)
-	if result.size() > 0: 
+	if result.size() > 0:
 		return result[0]["collider"]
 	return null
 
@@ -108,19 +108,19 @@ func get_unit_at_grid_pos(grid_pos: Vector2i) -> Unit:
 # --- GERENCIAMENTO VISUAL DE UNIDADES ---
 
 func register_unit_position(unit: Unit, new_pos: Vector2i, instant: bool = false):
-	print(unit.name, " - ", new_pos)
+	# print(unit.name, " - ", new_pos)
 	var old_pos = unit.grid_pos
 	
 	# Remove da célula antiga
 	if grid.has(old_pos):
 		grid[old_pos].remove_unit(unit)
-		reorganize_visuals(old_pos) 
+		reorganize_visuals(old_pos, false) # Anima quem ficou para fechar a roda
 		
 	unit.grid_pos = new_pos
 	
 	# Adiciona na nova
 	if grid.has(new_pos):
-		print("Unit: " , unit.name)
+		# print("Unit: " , unit.name)
 		grid[new_pos].add_unit(unit)
 		reorganize_visuals(new_pos, instant)
 
@@ -128,8 +128,7 @@ func reorganize_visuals(coord: Vector2i, instant: bool = false):
 	if not grid.has(coord): return
 	
 	var cell: GridCell = grid[coord]
-	print("Cell units")
-	print(cell.units)
+	# Filtra apenas unidades vivas
 	var active_units = cell.units.filter(func(u): return not u.get("is_dead"))
 	
 	var count = active_units.size()
@@ -144,21 +143,31 @@ func reorganize_visuals(coord: Vector2i, instant: bool = false):
 			create_reposition_tween(active_units[0], center_pixel)
 	else:
 		# Distribui em círculo se tiver mais de um no mesmo tile
-		var angle_step = TAU / count 
+		var angle_step = TAU / count
 		for i in range(count):
 			var u = active_units[i]
-			var angle = i * angle_step
+			# Começa do topo (-PI/2) para ficar mais bonito visualmente
+			var angle = i * angle_step - (PI / 2)
 			var offset = Vector2(cos(angle), sin(angle)) * CLUSTER_RADIUS
 			
+			var target_pos = center_pixel + offset
+			
 			if instant:
-				u.position = center_pixel + offset
+				u.position = target_pos
 			else:
-				create_reposition_tween(u, center_pixel + offset)
-				
+				create_reposition_tween(u, target_pos)
+
+# CORREÇÃO PRINCIPAL AQUI:
 func create_reposition_tween(target_unit: Unit, target_pos: Vector2):
-	if not target_unit.is_moving: 
-		var tween = create_tween()
-		tween.tween_property(target_unit, "position", target_pos, 0.2)
+	# Removemos a verificação 'if not target_unit.is_moving'
+	# Motivo: Quando a unidade chega no tile, ela ainda está tecnicamente marcada como 'moving'
+	# pelo sistema de pathfinding, mas precisamos ajustar a posição final dela na pilha agora.
+	
+	# Cria um novo tween sobrepondo qualquer movimento residual
+	var tween = create_tween()
+	tween.set_trans(Tween.TRANS_SINE)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.tween_property(target_unit, "position", target_pos, 0.2)
 
 # --- DEBUG ---
 func _draw():

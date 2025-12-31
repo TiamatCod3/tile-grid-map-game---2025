@@ -10,5 +10,4 @@ portrait = ExtResource("1_7j53l")
 sprite = ExtResource("1_7j53l")
 max_health = 10
 current_health = 10
-attack_damage = 2
 metadata/_custom_type_script = "uid://cgu2r3vuvcifw"

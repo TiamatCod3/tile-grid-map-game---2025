@@ -6,7 +6,7 @@ const DEFAULT_WEAPON_PATH = "res://Gameplay/Combat/Data/unarmed.tres"
 
 # --- CONFIGURAÇÃO (Inspector) ---
 @export var stats: UnitStats # A ficha do personagem (Resource)
-@export var equipped_weapon: WeaponStrategy # A estratégia de ataque
+#@export var equipped_weapon: WeaponStrategy # A estratégia de ataque
 @export var move_speed: float = 0.2
 
 # --- ESTADO (Runtime) ---
@@ -24,6 +24,15 @@ var is_dead: bool = false
 # --- VISUAIS ---
 @onready var visual_sprite: Sprite2D = $Visual # Certifique-se que o nó chama "Visual" no Editor
 
+var equipped_weapon: WeaponStrategy:
+	get:
+		if stats and stats.equipped_weapon:
+			return stats.equipped_weapon
+		return load(DEFAULT_WEAPON_PATH) # Fallback
+	set(value):
+		if stats:
+			stats.equipped_weapon = value
+			
 func _ready() -> void:
 	# 1. Configura Stats (Cria cópia única para não alterar o arquivo original do projeto)
 	if stats:
@@ -42,8 +51,8 @@ func _ready() -> void:
 		current_ap = 3 # Valor padrão se não tiver Stats
 		
 	# 2. Configura Arma Padrão se estiver vazio
-	if not equipped_weapon:
-		equipped_weapon = load(DEFAULT_WEAPON_PATH)
+	#if not equipped_weapon:
+		#equipped_weapon = load(DEFAULT_WEAPON_PATH)
 
 # --- RECURSOS DO TURNO ---
 func reset_turn_resources():
@@ -77,7 +86,7 @@ func traverse_path_visual(path: Array, board: GameBoard) -> void:
 		
 		# 4. Atualiza a lógica no Board passo a passo
 		# O 'true' indica atualização visual instantânea dentro do tile (stacking)
-		board.register_unit_position(self, step, true)
+		board.register_unit_position(self, step, false)
 			
 	is_moving = false
 
@@ -101,6 +110,8 @@ func attack_target(target_unit: Unit, board: GameBoard) -> int:
 
 # Recebe dano (Proxy para o Stats)
 func take_damage(amount: int):
+	print(equipped_weapon.damage)
+	print("Dano: ", amount)
 	if stats:
 		stats.take_damage(amount)
 		_play_hit_effect()
