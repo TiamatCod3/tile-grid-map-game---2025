@@ -13,5 +13,6 @@ mission_data = ExtResource("2_lquwl")
 [node name="Hud" parent="." instance=ExtResource("1_ig7tw")]
 
 [node name="GameBoard" parent="." instance=ExtResource("2_0xm2m")]
+debug_mode = false
 
 [node name="CameraController" parent="." instance=ExtResource("3_h2yge")]

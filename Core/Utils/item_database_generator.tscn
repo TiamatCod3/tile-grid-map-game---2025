@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdp8t5lpyxr5h"]
+
+[ext_resource type="Script" uid="uid://x8e7cbd87vl7" path="res://Core/Utils/item_database_generator.gd" id="1_pg0jy"]
+
+[node name="ItemDatabaseGenerator" type="Node2D"]
+script = ExtResource("1_pg0jy")

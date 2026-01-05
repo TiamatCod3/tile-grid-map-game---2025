@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Core/Autoloads/game_rng.gd" id="1_dn4np"]
+[ext_resource type="Script" path="res://Core/Data/Items/item_data.gd" id="2_2t7n1"]
+
+[sub_resource type="Resource" id="Resource_k0slv"]
+script = ExtResource("1_dn4np")
+name = "Mana Recharge"
+trigger = 3
+stat_modifiers = {
+"mana_recover": 1
+}
+
+[resource]
+script = ExtResource("2_2t7n1")
+item_name = "Magic Staff"
+rarity = 5
+slot_type = 4
+is_two_handed = true
+yellow_dice = 1
+granted_abilities = Array[ExtResource("1_dn4np")]([SubResource("Resource_k0slv")])

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Core/Autoloads/game_rng.gd" id="1_2rfoa"]
+[ext_resource type="Script" path="res://Core/Data/Items/item_data.gd" id="2_fddde"]
+
+[sub_resource type="Resource" id="Resource_ap3wc"]
+script = ExtResource("1_2rfoa")
+name = "Piercing Thrust"
+trigger = 3
+mana_cost = 1
+stat_modifiers = {
+"pierce": 1
+}
+
+[resource]
+script = ExtResource("2_fddde")
+item_name = "Dagger"
+rarity = 5
+yellow_dice = 1
+granted_abilities = Array[ExtResource("1_2rfoa")]([SubResource("Resource_ap3wc")])

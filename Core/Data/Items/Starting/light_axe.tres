@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Core/Autoloads/game_rng.gd" id="1_pkx01"]
+[ext_resource type="Script" path="res://Core/Data/Items/item_data.gd" id="2_ccuqx"]
+
+[resource]
+script = ExtResource("2_ccuqx")
+item_name = "Light Axe"
+rarity = 5
+slot_type = 4
+is_two_handed = true
+orange_dice = 1

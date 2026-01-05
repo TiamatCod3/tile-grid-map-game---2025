@@ -20,6 +20,7 @@ config/icon="res://Assets/icon.svg"
 TurnManager="*res://Core/Autoloads/turn_manager.gd"
 CommandInvoker="*res://Core/Autoloads/command_invoker.gd"
 EventManager="*res://Core/Autoloads/event_manager.gd"
+LootManager="*res://Core/Autoloads/loot_manager.gd"
 
 [editor_plugins]
 

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Core/Autoloads/game_rng.gd" id="1_bswwg"]
+[ext_resource type="Script" path="res://Core/Data/Items/item_data.gd" id="2_eigw3"]
+
+[resource]
+script = ExtResource("2_eigw3")
+item_name = "Leather Armor"
+rarity = 5
+slot_type = 1
+blue_dice = 1
