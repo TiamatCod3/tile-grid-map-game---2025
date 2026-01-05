@@ -7,6 +7,7 @@ extends Resource
 # Chave: A coordenada exata da Célula Superior Esquerda no mundo (0,0), (0,3), (3,3)...
 # Valor: O recurso do Tile
 @export var layout: Dictionary[Vector2i, MapTile] = {} 
+@export var enemies_spawn_points: Dictionary[int, UnitStats] = {}
 
 # Rotações para as mesmas coordenadas
 @export var layout_rotation: Dictionary[Vector2i, int] = {}

@@ -20,11 +20,13 @@ extends Resource
 @export var max_mp: int = 0 # Geralmente começa com 0 e ganha convertendo AP
 
 @export_group("Combate")
-@export var attack_damage: int = 1
-@export var attack_range: int = 1 # 1 = Corpo a corpo
+#@export var attack_damage: int = 1
+#@export var attack_range: int = 1 # 1 = Corpo a corpo
+@export var equipped_weapon: WeaponStrategy
 
 @export_group("Movimento")
 @export var move_speed: int = 3 # Quantas ações custa ou quantos quadrados anda
+
 
 # SINAL NOVO
 signal health_depleted

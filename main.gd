@@ -1,13 +1,13 @@
 extends Node2D
 @export var mission_data: MissionSetup 
 @export var heroes_to_spawn: Array[UnitStats] = [
-	preload("res://Gameplay/Stats/warior_stats.tres"),
+	preload("res://Gameplay/Stats/warrior_stats.tres"),
 	preload("res://Gameplay/Stats/mage_stats.tres")
 ]
 
 @onready var game_board: GameBoard = $GameBoard
 @onready var camera: CameraController = $CameraController
-@onready var hud: CanvasLayer = $HUD # (Opcional, se já tiver criado)
+@onready var hud: CanvasLayer = $Hud # (Opcional, se já tiver criado)
 
 func _ready() -> void:
 	# Segurança: Verifica se tem missão
@@ -29,6 +29,7 @@ func _start_initialization_sequence() -> void:
 	# 2. ORDEM: Heróis (Cria as unidades nos pontos de spawn)
 	# Nota: GridBuilder.spawn_heroes é estático, passamos os dados necessários
 	var active_units = GridBuilder.spawn_heroes(heroes_to_spawn, mission_data, game_board)
+	var active_enemies = game_board.active_enemies
 	
 	if active_units.is_empty():
 		push_error("Main: Nenhum herói foi spawnado!")
@@ -37,7 +38,7 @@ func _start_initialization_sequence() -> void:
 	_setup_camera_view(active_units)
 	
 	# 4. ORDEM: Game Loop (Inicia o gerenciador de turnos)
-	TurnManager.start_game(active_units)
+	TurnManager.start_game(active_units, active_enemies)
 	print("✅ Main: Jogo iniciado.")
 
 func _setup_camera_view(units: Array[Unit]) -> void:

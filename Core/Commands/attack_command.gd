@@ -9,39 +9,54 @@ func _init(_actor: Unit, _board: GameBoard, _target: Unit):
 	super(_actor, _board)
 	target = _target
 
-func execute() -> void:
-	# 1. Snapshot da Economia
-	var ap_before = TurnManager.current_actions
-	
-	# Verificamos se estava vivo ANTES do ataque
+func execute() -> bool:
+	# 1. Verificar Custo da Arma
+	var weapon = actor.equipped_weapon
+	if not weapon:
+		push_error("Ator sem arma!")
+		return false
+
+	# Verifica se tem AP suficiente no TurnManager (Proxy para o actor)
+	if TurnManager.current_ap < weapon.ap_cost:
+		print("Sem AP suficiente para atacar.")
+		return false
+
+	# 2. Snapshot (Estado anterior)
+	var ap_before = TurnManager.current_ap
 	var was_alive_before = target.stats.current_health > 0
 	
-	if TurnManager.spend_full_action():
-		# 2. Execução e CAPTURA DO DANO REAL
-		# Agora 'damage_dealt' recebe o valor direto da arma
-		damage_dealt = await actor.attack_target(target, board)
-		
-		# 3. Verificação de Morte
-		# Se ele estava vivo, tomou dano, e agora está com 0 ou menos...
-		if was_alive_before and target.stats.current_health <= 0:
-			killed_target = true
-			print("Alvo abatido. Killed flag = true")
-		
-		cost_ap = ap_before - TurnManager.current_actions
+	# 3. Consumir Recursos
+	TurnManager.current_ap -= weapon.ap_cost
+	cost_ap = weapon.ap_cost # Guarda quanto custou para o Undo
+	
+	# 4. Executar Ataque (Async)
+	# O retorno é o dano causado (para sabermos quanto curar no undo)
+	damage_dealt = await actor.attack_target(target, board)
+	print("Ataque com: ", actor.equipped_weapon.name)
+	# 5. Verificação de Morte (Kill Confirmation)
+	# Se ele estava vivo antes e agora morreu, marcamos a flag
+	if was_alive_before and target.stats.current_health <= 0:
+		killed_target = true
+		print(">> Alvo abatido (Flag killed_target = true)")
+	
+	return true
 
 func undo() -> void:
 	print("Desfazendo Ataque...")
 	
 	# 1. Ressuscitar (se necessário)
-	# Fazemos isso ANTES de devolver a vida, para o objeto estar ativo
+	# Fazemos isso ANTES de devolver a vida, para o objeto reativar seus processos
 	if killed_target:
-		target.revive()
-		killed_target = false # Reseta flag
+		if target.has_method("revive"):
+			target.revive()
+		killed_target = false 
 	
-	# 2. Devolver Vida
-	# Aumentamos a vida sem tocar animação de dano
-	target.stats.current_health += damage_dealt
-	print("Vida do alvo restaurada para: ", target.stats.current_health)
+	# 2. Devolver Vida (Reverte o dano)
+	if target.stats:
+		# Aumentamos a vida direto, sem passar pelo take_damage para não triggar animação de hit
+		target.stats.heal(damage_dealt) 
+		print("Vida do alvo restaurada em: ", damage_dealt)
 	
-	# 3. Reembolso
-	TurnManager.refund_resources(cost_ap, cost_mp)
+	# 3. Reembolso de AP
+	# Usamos a função helper do TurnManager se existir, ou devolvemos direto
+	TurnManager.current_ap += cost_ap
