@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="UnitStats" load_steps=3 format=3 uid="uid://diu54nkhtlvw4"]
+
+[ext_resource type="Texture2D" uid="uid://n4mb5dg2xhnj" path="res://Assets/Heroes/HatGuy-Unique.png" id="1_onsjy"]
+[ext_resource type="Script" uid="uid://cgu2r3vuvcifw" path="res://Gameplay/Stats/unit_stats.gd" id="2_0525u"]
+
+[resource]
+script = ExtResource("2_0525u")
+unit_name = "S´hktar"
+portrait = ExtResource("1_onsjy")
+sprite = ExtResource("1_onsjy")
+max_health = 10
+current_health = 10
+metadata/_custom_type_script = "uid://cgu2r3vuvcifw"

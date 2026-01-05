@@ -1,7 +1,7 @@
 extends Node2D
 @export var mission_data: MissionSetup 
 @export var heroes_to_spawn: Array[UnitStats] = [
-	preload("res://Gameplay/Stats/warior_stats.tres"),
+	preload("res://Gameplay/Stats/warrior_stats.tres"),
 	preload("res://Gameplay/Stats/mage_stats.tres")
 ]
 

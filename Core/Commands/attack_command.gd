@@ -32,7 +32,7 @@ func execute() -> bool:
 	# 4. Executar Ataque (Async)
 	# O retorno é o dano causado (para sabermos quanto curar no undo)
 	damage_dealt = await actor.attack_target(target, board)
-	print(actor.equipped_weapon.name)
+	print("Ataque com: ", actor.equipped_weapon.name)
 	# 5. Verificação de Morte (Kill Confirmation)
 	# Se ele estava vivo antes e agora morreu, marcamos a flag
 	if was_alive_before and target.stats.current_health <= 0:
