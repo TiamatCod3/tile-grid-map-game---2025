@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0a47cusm01ra"]
+
+[ext_resource type="Script" uid="uid://ohtw0h4oyood" path="res://Gameplay/World/Interactables/mob_spawner.gd" id="1_rwa0t"]
+[ext_resource type="Texture2D" uid="uid://dalmcmdb4fl3g" path="res://Assets/Icons/mob_spawn.png" id="2_i0jy2"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0exhv"]
+radius = 8.062258
+
+[node name="MobSpawner" type="StaticBody2D"]
+script = ExtResource("1_rwa0t")
+
+[node name="AnimatedSprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_i0jy2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_0exhv")
