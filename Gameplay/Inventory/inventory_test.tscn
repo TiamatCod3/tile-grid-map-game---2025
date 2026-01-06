@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://ca5ko55c1uvab"]
+
+[ext_resource type="Script" uid="uid://d1q1f17llqu7i" path="res://Gameplay/Inventory/inventory_test.gd" id="1_cdqif"]
+[ext_resource type="Resource" uid="uid://dpp8a7pfeqqm3" path="res://Gameplay/Inventory/general_inventory.tres" id="2_gj58j"]
+
+[node name="Inventory" type="Node2D"]
+script = ExtResource("1_cdqif")
+inventory = ExtResource("2_gj58j")

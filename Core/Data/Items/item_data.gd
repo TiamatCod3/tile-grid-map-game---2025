@@ -11,7 +11,6 @@ enum SlotType { HEAD, CHEST, FEET, ACCESSORY, TWO_HAND,  HAND, CONSUMABLE }
 @export_category("Properties")
 @export var rarity: Rarity = Rarity.COMMON
 @export var slot_type: SlotType = SlotType.HAND
-@export var is_two_handed: bool = false
 
 # Dados básicos de combate que o item PROVÊ (fixos)
 @export_category("Base Stats")

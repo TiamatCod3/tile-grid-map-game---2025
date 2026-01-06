@@ -18,6 +18,7 @@ extends Resource
 @export_group("Recursos")
 @export var max_ap: int = 3
 @export var max_mp: int = 0 # Geralmente começa com 0 e ganha convertendo AP
+@export var inventory:= Inventory.new()
 
 @export_group("Combate")
 #@export var attack_damage: int = 1
